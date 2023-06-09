@@ -9,7 +9,7 @@
 @section('page-contant')
 
     <div>
-        <h1>Custmor's List</h1>
+        <h1>Customer's List</h1>
         <a href="{{ route('customer_registration_form') }}" class="btn btn-outline-primary">ADD</a>
         <div>
             <table class="table">
@@ -25,6 +25,7 @@
                     <th>Address 1</th>
                     <th>Address 2</th>
                     <th>Zipcode</th>
+
                 </tr>
                 @foreach ($customers as $customer)
                     <tr>
@@ -39,6 +40,9 @@
                         <td>{{ $customer->address_1 }}</td>
                         <td>{{ $customer->address_2 }}</td>
                         <td>{{ $customer->zipcode }}</td>
+                        <td><a href="" class="btn btn-primary">VIEW</a></td>
+                        <td><a href="" class="btn btn-danger">DELETE</a></td>
+
                     </tr>
                 @endforeach
             </table>

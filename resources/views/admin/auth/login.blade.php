@@ -52,7 +52,9 @@
                                         <label class="form-check-label text-muted">
                                             <input type="checkbox" class="form-check-input"> Keep me signed in </label>
                                     </div>
-                                    <a href="#" class="auth-link text-black">Forgot password?</a>
+                                    <label>
+                                        <a href="{{ route('forget.password.get') }}">Reset Password</a>
+                                    </label>
                                 </div>
                                 <div class="mb-2">
                                     <button type="button" class="btn btn-block btn-facebook auth-form-btn">

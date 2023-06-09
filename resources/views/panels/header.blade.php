@@ -36,6 +36,9 @@
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
                         <div class="dropdown-divider"></div>
                         @if (session('username'))
+                            <a class="dropdown-item" href="">
+                                <i id="profile" class="mdi mdi-account me-2 text-primary"></i> View Profile
+                            </a>
                             <a class="dropdown-item" href="{{ route('logout') }}">
                                 <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
                         @endif()
