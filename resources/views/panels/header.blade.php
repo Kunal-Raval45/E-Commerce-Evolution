@@ -1,3 +1,17 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    #more_settings {
+        position: absolute;
+        left: -210px;
+        /* Adjust the value to position it properly */
+        top: 0;
+        background-color: #ffffff;
+        border: 1px solid #f1ecec;
+        border-radius: 5px;
+        box-shadow: 2px black;
+        padding: 10px;
+    }
+</style>
 <div class="header">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -36,9 +50,24 @@
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
                         <div class="dropdown-divider"></div>
                         @if (session('username'))
-                            <a class="dropdown-item" href="">
-                                <i id="profile" class="mdi mdi-account me-2 text-primary"></i> View Profile
-                            </a>
+                            <div id="settings">
+                                <div class="dropdown-item">
+                                    <i id="profile" class="mdi mdi-settings me-2 text-primary"></i>Settings
+                                </div>
+                            </div>
+                            <div id="more_settings" style="display: none">
+                                <div id="view_profile">
+                                    <a class="dropdown-item" href="{{ route('userprofileupdate', session('id')) }}">
+                                        <i id="profile" class="mdi mdi-account me-2 text-primary"></i> View Profile
+                                    </a>
+                                </div>
+                                <div id="change_password">
+                                    <a class="dropdown-item" href="">
+                                        <i id="profile" class="mdi mdi-account-edit me-2 text-primary"></i> Change
+                                        Password
+                                    </a>
+                                </div>
+                            </div>
                             <a class="dropdown-item" href="{{ route('logout') }}">
                                 <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
                         @endif()
@@ -54,3 +83,10 @@
         </div>
     </nav>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#settings").hover(function() {
+            $("#more_settings").show();
+        });
+    });
+</script>

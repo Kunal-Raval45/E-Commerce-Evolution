@@ -18,6 +18,7 @@
                     <thead>
                         <tr>
                             <th>No.</th>
+                            <th>Profile</th>
                             <th>User Name</th>
                             <th>Email</th>
                             <th>Phone Number</th>
@@ -26,10 +27,16 @@
                         </tr>
                     </thead>
                     <tbody>
+
                         @foreach ($users as $user)
+                            @if ($user->profile_image == '')
+                                {{ $user->profile_image = strtoupper(substr($user->name, 0, 1)) }}
+                            @endif
                             <tr>
                                 <td>1</td>
+                                <td><img src="{{ $user->profile_image }}"></td>
                                 <td>{{ $user->name }}</td>
+
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone }}</td>
 

@@ -7,7 +7,14 @@
 @endsection
 
 @section('page-contant')
+    <!-- Datatable CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" />
 
+    <!-- jQuery Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Datatable JS -->
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <div class="container">
         <h1>Category</h1>
         <a href="{{ route('Category.viewAddCategory') }}"><button class="btn btn-primary mb-4">ADD</button></a>
@@ -25,7 +32,7 @@
         <div class="container">
 
             <div class="">
-                <table class="table">
+                <table id='empTable' width='100%' border="1" style='border-collapse: collapse;'>
                     <thead>
                         <tr>
                             <th>No.</th>
@@ -35,10 +42,10 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    {{-- <tbody>
                         @foreach ($categories as $category)
                             <tr>
-                                <td>1</td>
+                                <td>{{ ++$i }}</td>
                                 <td>{{ $category->categoryName }}</td>
                                 <td><img src="{{ $category->img }}" width="100"></td>
                                 <td>
@@ -57,7 +64,7 @@
                                 </td>
                             </tr>
                         @endforeach
-                    </tbody>
+                    </tbody> --}}
                 </table>
             </div>
         </div>
@@ -69,5 +76,46 @@
 @endsection
 
 @section('page-js')
+    <!-- Script -->
+    <script type="text/javascript">
+        $(document).ready(function() {
 
+            // DataTable
+            var empTable = $('#empTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('Category.category') }}",
+                    data: function(data) {
+                        data.searchCity = $('#sel_city').val();
+                        data.searchGender = $('#sel_gender').val();
+                        data.searchName = $('#searchName').val();
+                    }
+                },
+                columns: [{
+                        data: 'CategoryName'
+                    },
+                    {
+                        data: 'img'
+                    },
+                    {
+                        data: 'status'
+                    },
+
+                ]
+            });
+
+            $('#sel_city,#sel_gender').change(function() {
+                empTable.draw();
+            });
+
+            $('#searchName').keyup(function() {
+                empTable.draw();
+            });
+
+        });
+    </script>
+    </body>
+
+    </html>
 @endsection

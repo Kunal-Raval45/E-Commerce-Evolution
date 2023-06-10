@@ -11,11 +11,15 @@
     <div>
         <h1>Add Users</h1>
 
-        <form action="{{ route('addusersform') }}" method="POST">
+        <form action="{{ route('addusersform') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="name">User's Name</label>
                 <input type="text" class="form-control" name="name" id="name" />
+            </div>
+            <div class="form-group">
+                <label for="profile_image">User's Profile Image</label>
+                <input type="file" class="form-control" name="profile_image" id="profile_image" />
             </div>
             <div class="form-group">
                 <label for="email">User's Email</label>

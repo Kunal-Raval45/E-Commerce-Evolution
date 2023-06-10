@@ -39,6 +39,8 @@ Route::controller(UsersController::class)->group(function () {
     Route::get('/users', 'viewusers')->name('viewusers');
     Route::get('/users/{id}', 'viewspecificuser')->name('viewspecificuser');
 
+    Route::get('/viewprofile/{id}', 'userprofileupdate')->name('userprofileupdate');
+
     Route::get('/edit/{id}', 'edit')->name('Users.edit');
     Route::post('/edit/{id}', 'updateForm')->name('Users.updateForm');
 

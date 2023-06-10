@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 use Illuminate\Http\Request;
@@ -42,7 +44,7 @@ class UsersController extends Controller
             'name' => $storeData['name'],
             'email' => $storeData['email'],
             'phone' => $storeData['phone'],
-            'password' => $storeData['password'],
+            'password' => md5($storeData['password']),
         ]);
 
         if($users){
@@ -57,12 +59,20 @@ class UsersController extends Controller
     public function addusersform(Request $request){
         $storeData = $request->validate([
             'name' => 'required|max:255',
+            'profile_image' => 'mime:jpeg,png,jpg,gif',
             'email' => 'required|max:255',
             'phone' => 'required|numeric',
             'password' => 'required|max:255',
         ]);
 
+        $imageName = date('d-m-y').'.'.$storeData['name'].'.'.($storeData['profile_image']->getClientOriginalName());
+        $priorPath = ("images/users/uploads");
+        if(!$priorPath){
+            File::makeDirectory("images/users/uploads");
+        }
 
+
+       $path =  $storeData['profile_image']->move($priorPath,$imageName);
 
         $users = User::create($storeData);
 
@@ -73,6 +83,7 @@ class UsersController extends Controller
     }
     public function viewusers(){
        $users =  User::where('id','!=',session('id'))->get();
+
         return view('admin.users.users', compact('users'));
     }
 
@@ -80,9 +91,14 @@ class UsersController extends Controller
         $users = User::where('id',$id)->first();
         return view('admin.users.usersview', compact('users'));
     }
-    /**
-     * Show the form for editing the specified resource.
-     */
+
+    public function userprofileupdate($id){
+
+        $users = User::where('id',$id)->first();
+        return view('admin.users.profile', compact('users'));
+
+    }
+
     public function edit($id)
     {
         $users = User::findorfail($id);
@@ -96,10 +112,12 @@ class UsersController extends Controller
     {
         $updateData = $request->validate([
             'name' => 'required|max:255',
+            'profile_image' => 'mimes:jpeg,png,jpg,gif',
             'email' => 'required|max:255',
             'phone' => 'required|numeric',
             'status' => 'required',
         ]);
+
         User::whereId($id)->update($updateData);
         return redirect('users')->with('completed', 'user has been updated');
     }
@@ -123,7 +141,9 @@ class UsersController extends Controller
             'password' => 'required|max:255',
         ]);
 
-        $users = DB::table('users')->whereEmailAndPassword($check['email'], $check['password'])->first();
+
+
+        $users = DB::table('users')->whereEmailAndPassword($check['email'], Hash::make(($check['password'])))->first();
 
 
         if($users){
