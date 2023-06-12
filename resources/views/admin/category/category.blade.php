@@ -3,119 +3,99 @@
 @section('title', 'Add Category')
 
 @section('page-css')
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" />
 
 @endsection
 
 @section('page-contant')
-    <!-- Datatable CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" />
+
+    <div class="container">
+
+        <h1>Category</h1>
+
+        <a href="{{ route('Category.viewAddCategory') }}"><button class="btn btn-primary mb-4">ADD</button></a>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <table id="zero_configuration_table" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>Category Image</th>
+                                    <th>Category Name</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+
+@section('page-js')
 
     <!-- jQuery Library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- Datatable JS -->
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-    <div class="container">
-        <h1>Category</h1>
-        <a href="{{ route('Category.viewAddCategory') }}"><button class="btn btn-primary mb-4">ADD</button></a>
-        <style>
-            .table,
-            tr,
-            th,
-            td {
-                border: 1px solid black;
-                border-collapse: collapse;
 
-                text-align: center
-            }
-        </style>
-        <div class="container">
-
-            <div class="">
-                <table id='empTable' width='100%' border="1" style='border-collapse: collapse;'>
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Category Name</th>
-                            <th>Image</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    {{-- <tbody>
-                        @foreach ($categories as $category)
-                            <tr>
-                                <td>{{ ++$i }}</td>
-                                <td>{{ $category->categoryName }}</td>
-                                <td><img src="{{ $category->img }}" width="100"></td>
-                                <td>
-                                    @if ($category->status == 0)
-                                        Active
-                                    @else
-                                        InActive
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="{{ route('Category.viewEditCategory', $category->id) }}"
-                                        class="btn btn-primary">EDIT</a>
-                                    <a href="{{ route('Category.viewCategory', $category->id) }}"><button
-                                            class="btn btn-primary">VIEW</button></a>
-                                    <a href="#" class="btn btn-danger">DELETE</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody> --}}
-                </table>
-            </div>
-        </div>
-
-
-
-    </div>
-
-@endsection
-
-@section('page-js')
-    <!-- Script -->
     <script type="text/javascript">
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+
         $(document).ready(function() {
 
-            // DataTable
-            var empTable = $('#empTable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ route('Category.category') }}",
-                    data: function(data) {
-                        data.searchCity = $('#sel_city').val();
-                        data.searchGender = $('#sel_gender').val();
-                        data.searchName = $('#searchName').val();
-                    }
+
+            dtable = $('#zero_configuration_table').DataTable({
+                "language": {
+                    "lengthMenu": "_MENU_",
                 },
-                columns: [{
-                        data: 'CategoryName'
-                    },
-                    {
-                        data: 'img'
-                    },
-                    {
-                        data: 'status'
-                    },
+                "columnDefs": [{
+                    "targets": "_all",
+                    "orderable": false
+                }],
+                responsive: true,
+                'serverSide': true, // Feature control DataTables' server-side processing mode.
 
-                ]
+                "ajax": {
+                    "url": "{{ route('category.getCategory') }}",
+                    'beforeSend': function(request) {
+                        request.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr(
+                            'content'));
+                    },
+                    "type": "POST",
+                    "data": function(data) {
+
+                    },
+                },
             });
 
-            $('#sel_city,#sel_gender').change(function() {
-                empTable.draw();
-            });
+            $('.panel-ctrls').append("<i class='separator'></i>");
 
-            $('#searchName').keyup(function() {
-                empTable.draw();
+            $('.panel-footer').append($(".dataTable+.row"));
+            $('.dataTables_paginate>ul.pagination').addClass("pull-right");
+
+            $("#apply_filter_btn").click(function() {
+                dtable.ajax.reload(null, false);
             });
 
         });
     </script>
-    </body>
 
-    </html>
 @endsection

@@ -13,101 +13,90 @@ use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
-    public function category(Request $request){
+    public function category()
+    {
+        return view('admin.category.category');
+    }
 
-             ## Read value
-      $draw = $request->get('draw');
-      $start = $request->get("start");
-      $rowperpage = $request->get("length"); // Rows display per page
+    public function getCategory(Request $request)
+    {
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
 
-      $columnIndex_arr = $request->get('order');
-      $columnName_arr = $request->get('columns');
-      $order_arr = $request->get('order');
-      $search_arr = $request->get('search');
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
 
-      $columnIndex = $columnIndex_arr[0]['column']; // Column index
-      $columnName = $columnName_arr[$columnIndex]['data']; // Column name
-      $columnSortOrder = $order_arr[0]['dir']; // asc or desc
-      $searchValue = $search_arr['value']; // Search value
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
 
-      // Custom search filter
-    //   $searchCity = $request->get('searchCity');
-    //   $searchGender = $request->get('searchGender');
-      $searchName = $request->get('searchName');
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
 
-      // Total records
-      $records = Category::select('count(*) as allcount');
+        // Total records
+        $totalRecords = Category::select('count(*) as allcount')->count();
+        $totalRecordswithFilter = Category::select('count(*) as allcount')->where('categoryName', 'like', '%' . $searchValue . '%')->count();
 
-                // if(!empty($searchCity)){
-                //     $records->where('city',$searchCity);
-                // }
-                // if(!empty($searchGender)){
-                //     $records->where('gender',$searchGender);
-                // }
-                if(!empty($searchName)){
-                    $records->where('categoryName','like','%'.$searchName.'%');
-                }
-                $totalRecords = $records->count();
-                // Total records with filter
-                $records = Category::select('count(*) as allcount')->where('categoryName', 'like', '%' .$searchValue . '%');
+        // Fetch records
+        $records = Category::orderBy('category.id', "desc")
+            ->where('category.categoryName', 'like', '%' . $searchValue . '%')
+            ->select('category.*')
+            ->skip($start)
+            ->take($rowperpage)
+            ->get();
 
-                ## Add custom filter conditions
-                // if(!empty($searchCity)){
-                //     $records->where('city',$searchCity);
-                // }
-                // if(!empty($searchGender)){
-                //     $records->where('gender',$searchGender);
-                // }
-                if(!empty($searchName)){
-                    $records->where('categoryName','like','%'.$searchName.'%');
-                }
-                $totalRecordswithFilter = $records->count();
+        $data = array();
+        $counter = 0;
+        foreach ($records as $record) {
 
-                // Fetch records
-                $records = Category::orderBy($columnName,$columnSortOrder)
-                            ->select('users_4.*')
-                            ->where('users_4.name', 'like', '%' .$searchValue . '%');
-                ## Add custom filter conditions
-                if(!empty($searchCity)){
-                    $records->where('city',$searchCity);
-                }
-                if(!empty($searchGender)){
-                    $records->where('gender',$searchGender);
-                }
-                if(!empty($searchName)){
-                    $records->where('categoryName','like','%'.$searchName.'%');
-                }
-                $employees = $records->skip($start)
-                            ->take($rowperpage)
-                            ->get();
+            if($record['status'] == '1')
+            {
+                $status = '<span class="">Active</span>';
+            }
+            else
+            {
+                $status = '<span class="">Inactive</span>';
+            }
 
-                $data_arr = array();
-                foreach($employees as $employee){
+            $row = array();
+            $row[] = ++$counter;
 
-                    $username = $employee->username;
-                    $name = $employee->name;
-                    $email = $employee->email;
-                    $gender = $employee->gender;
-                    $city = $employee->city;
+            $row[] = '<img src ="'. $record['img'] . '">';
 
-                    $data_arr[] = array(
-                        "username" => $username,
-                        "name" => $name,
-                        "email" => $email,
-                        "gender" => $gender,
-                        "city" => $city,
-                    );
-                }
+            $row[] = $record['categoryName'];
 
-                $response = array(
-                    "draw" => intval($draw),
-                    "iTotalRecords" => $totalRecords,
-                    "iTotalDisplayRecords" => $totalRecordswithFilter,
-                    "aaData" => $data_arr
-                );
+            $row[] = $status;
 
-                return response()->json($response);
-}
+            $Action = '';
+
+
+            $Action .= '<a href="' . route('Category.viewEditCategory', $record['id']) . '" class="btn btn-secondary">edit</a>&nbsp;|';
+
+
+            $Action .= '<a href="javascript:;" class="btn">view</a>&nbsp;|';
+
+
+            $Action .= '<a data-id="" href="javascript:;" class="btn">delete</a>';
+
+
+
+            $row[] = $Action;
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => intval($draw),
+            "recordsTotal" => $totalRecords,
+            "recordsFiltered" => $totalRecordswithFilter,
+            "data" => $data,
+        );
+
+        echo json_encode($output);
+        exit;
+    }
 
 
     public function viewCategory($id){
@@ -118,11 +107,7 @@ class CategoryController extends Controller
         return view('admin.category.categoryadd');
     }
     public function viewEditCategory($id){
-
         $category = DB::table('category')->where('id',$id)->first();
-
-
-        // dd($category);
         return view('admin.category.categoryedit', compact('category'));
     }
 

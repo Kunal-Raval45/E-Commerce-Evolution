@@ -69,7 +69,7 @@ class ForgotPasswordController extends Controller
           }
 
           $user = User::where('email', $request->email)
-                      ->update(['password' => md5($request->password)]);
+                      ->update(['password' => HASH::make($request->password)]);
 
           DB::table('password_reset_tokens')->where(['email'=> $request->email])->delete();
 

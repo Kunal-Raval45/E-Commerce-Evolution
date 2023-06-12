@@ -19,7 +19,18 @@
                     <label for="user_name">User's Name:</label>
                     <input type="text" class="form-control" value="{{ $users->name }}" id="user_name" name="name">
                 </div>
-
+                <div class="form-group">
+                    <label for="user_name">User's Image:</label>
+                    @if ($users->profile_image)
+                        <img src="../{{ $users->profile_image }}" width="250">
+                    @else
+                        <p>No Image Found</p>
+                    @endif
+                </div>
+                <div class="form-group">
+                    <label for="user_email">Change User's Image:</label>
+                    <input type="file" class="form-control" name="profile_image">
+                </div>
                 <div class="form-group">
                     <label for="user_email">User's Email:</label>
                     <input type="email" class="form-control" value="{{ $users->email }}" id="user_email" name="email">

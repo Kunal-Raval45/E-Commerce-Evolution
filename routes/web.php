@@ -37,9 +37,13 @@ Route::controller(UsersController::class)->group(function () {
 
 
     Route::get('/users', 'viewusers')->name('viewusers');
-    Route::get('/users/{id}', 'viewspecificuser')->name('viewspecificuser');
+    Route::post('/users/getuser', 'getUser')->name('User.getUser');
 
-    Route::get('/viewprofile/{id}', 'userprofileupdate')->name('userprofileupdate');
+    Route::get('/user/{id}', 'viewspecificuser')->name('viewspecificuser');
+
+    Route::get('/viewprofile/{id}', 'userprofile')->name('userprofile');
+    Route::get('/editprofile/{id}', 'editprofile')->name('editprofile');
+
 
     Route::get('/edit/{id}', 'edit')->name('Users.edit');
     Route::post('/edit/{id}', 'updateForm')->name('Users.updateForm');
@@ -55,9 +59,13 @@ Route::controller(UsersController::class)->group(function () {
 
 Route::controller(CategoryController::class)->group(function () {
 
-    Route::get('/Category', 'Category')->name('Category.category');
+    Route::get('/Category', 'category')->name('Category.category');
+    Route::post('/Category/getcategory', 'getCategory')->name('category.getCategory');
+
     Route::get('/viewSpecificCategory/{id}', 'viewCategory')->name('Category.viewCategory');
+
     Route::get('/addCategory', 'viewAddCategory')->name('Category.viewAddCategory');
+
     Route::get('/editCategory/{id}', 'viewEditCategory')->name('Category.viewEditCategory');
 
 

@@ -57,7 +57,7 @@
                             </div>
                             <div id="more_settings" style="display: none">
                                 <div id="view_profile">
-                                    <a class="dropdown-item" href="{{ route('userprofileupdate', session('id')) }}">
+                                    <a class="dropdown-item" href="{{ route('userprofile', session('id')) }}">
                                         <i id="profile" class="mdi mdi-account me-2 text-primary"></i> View Profile
                                     </a>
                                 </div>

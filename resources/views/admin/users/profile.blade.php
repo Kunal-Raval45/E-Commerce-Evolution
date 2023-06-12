@@ -18,30 +18,47 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body text-center">
-                        <img src="profile-picture.jpg" alt="Profile Picture" class="img-fluid rounded-circle mb-3"
-                            width="200">
-                        <h5 class="card-title">John Doe</h5>
-                        <p class="card-text">Web Developer</p>
-                        <ul class="list-unstyled">
+                        {{-- <img src="profile-picture.jpg" alt="Profile Picture" class="img-fluid rounded-circle mb-3"
+                            width="200"> --}}
+                        <h1>{{ $users->name }}</h1>
+                        <div>
+
+                            <div>
+                                <div class="dropdown-item">
+                                    <button class="btn btn-light" id="edit_profile"><i id="edit-profile"
+                                            class="mdi mdi-account-edit me-2 text-primary"></i>EDIT
+                                        PROFILE</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="dropdown-item">
+                                    <button class="btn btn-light" id="change_password"> <i id="profile"
+                                            class="mdi mdi-account-edit me-2 text-primary"></i>CHANGE PASSWORD</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        {{-- <ul class="list-unstyled">
                             <li><i class="fa fa-envelope"></i> john.doe@example.com</li>
                             <li><i class="fa fa-phone"></i> 123-456-7890</li>
                             <li><i class="fa fa-map-marker"></i> New York, USA</li>
-                        </ul>
+                        </ul> --}}
                     </div>
                 </div>
             </div>
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">About Me</h5>
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla fringilla, sapien vitae lacinia
-                            posuere, sem ipsum consequat mi, at gravida nunc dolor in velit. Sed sit amet dapibus mauris.
-                            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus
-                            efficitur malesuada lacus, vitae dapibus ligula vulputate in. Nulla vitae finibus felis, ut
-                            rutrum
-                            leo. In dapibus eu purus id eleifend.
-                        </p>
+                        {{-- @yield('edit-content') --}}
+                        <div id="editprofileform" style="display: none;">
+                            <h1>Edit Profile</h1>
+                            <!-- Add your edit profile form elements here -->
+                        </div>
+                        <div id="changepasswordform" style="display: none;">
+                            <h1>Change Password</h1>
+                            <!-- Add your change password form elements here -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,5 +70,18 @@
 @endsection
 
 @section('page-js')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
 
+            $("#change_password").click(function() {
+                $("#changepasswordform").show();
+                $("#editprofileform").hide();
+            });
+            $("#edit_profile").click(function() {
+                $("#editprofileform").show();
+                $("#changepasswordform").hide();
+            });
+        });
+    </script>
 @endsection
