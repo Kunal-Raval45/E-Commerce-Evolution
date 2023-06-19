@@ -17,38 +17,7 @@ class UsersController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function register()
-    {
-        return view('admin.auth.register');
-    }
-    public function login()
-    {
-        return view('admin.auth.login');
-    }
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function registrationForm(Request $request)
-    {
 
-        $storeData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|max:255',
-            'phone' => 'required|numeric',
-            'password' => 'required|max:255',
-        ]);
-        $users = DB::table('users')->insert([
-            'name' => $storeData['name'],
-            'email' => $storeData['email'],
-            'phone' => $storeData['phone'],
-            'password' => Hash::make($storeData['password']),
-        ]);
-
-        if($users){
-            return redirect('/login');
-        }
-
-    }
     public function addusers(){
         return view('admin.users.usersadd');
     }
@@ -113,7 +82,7 @@ class UsersController extends Controller
         $counter = 0;
         foreach ($records as $record) {
 
-            if($record['status'] == '1')
+            if($record['status'] == '0')
             {
                 $status = '<span class="">Active</span>';
             }
@@ -125,9 +94,21 @@ class UsersController extends Controller
             $row = array();
             $row[] = ++$counter;
 
-            $row[] = '<img src ="'. $record['profile_image'] . '">';
+            if($record['profile_image'] == ''){
+                $img = substr(StrtoUpper($record['name']),0,1);
+             }
+             else{
+                 $img = '<img src ="' . $record['profile_image'] . '">';
+             }
+
+            $row[] = $img;
 
             $row[] = $record['name'];
+
+            $row[] = $record['email'];
+
+            $row[] = $record['phone'];
+
 
             $row[] = $status;
 
@@ -162,19 +143,6 @@ class UsersController extends Controller
         $users = User::where('id',$id)->first();
         return view('admin.users.usersview', compact('users'));
     }
-
-    public function userprofile($id){
-
-        $users = User::where('id',$id)->first();
-        return view('admin.users.profile', compact('users'));
-
-    }
-
-    public function editprofile($id){
-        $users = User::where('id',$id)->first();
-        return view('admin.users.editprofile', compact('users'));
-    }
-
     public function edit($id)
     {
         $users = User::findorfail($id);
@@ -218,36 +186,5 @@ class UsersController extends Controller
         $users = User::findOrFail($id);
         $users->delete();
         return redirect('/users')->with('completed', 'User has been deleted');
-    }
-
-
-
-    public function loginForm(Request $request)
-    {
-        $check = $request->validate([
-            'email' => 'required|max:255',
-            'password' => 'required|max:255',
-        ]);
-
-
-
-        $users = DB::table('users')->whereEmailAndPassword($check['email'], ($check['password']))->first();
-
-
-
-
-        if($users){
-
-            Session::put('username', $users->name);
-            Session::put('id', $users->id);
-
-            return redirect('/');
-        }
-
-    }
-    public function logout(){
-
-        session()->flush();
-        return redirect('/');
     }
 }

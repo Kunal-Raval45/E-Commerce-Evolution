@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CustomerController;
@@ -23,8 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('admin.dashboard');
 });
+Route::controller(AuthController::class)->group(function (){
 
-Route::controller(UsersController::class)->group(function () {
     Route::get('/login', 'login')->name('Users.login');
     Route::post('/login', 'loginForm')->name('Users.loginForm');
 
@@ -32,26 +33,26 @@ Route::controller(UsersController::class)->group(function () {
     Route::get('/register', 'register')->name('Users.register');
     Route::post('/register', 'registrationForm')->name('Users.registrationForm');
 
+    Route::get('/logout','logout')->name('logout');
+
+});
+Route::controller(UsersController::class)->group(function () {
+
+
     Route::get('/addusers', 'addusers')->name('addusers');
     Route::post('/addusers', 'addusersform')->name('addusersform');
 
 
     Route::get('/users', 'viewusers')->name('viewusers');
-    Route::post('/users/getuser', 'getUser')->name('User.getUser');
+    Route::post('/users/getUsers', 'getUser')->name('User.getUser');
 
     Route::get('/user/{id}', 'viewspecificuser')->name('viewspecificuser');
-
-    Route::get('/viewprofile/{id}', 'userprofile')->name('userprofile');
-    Route::get('/editprofile/{id}', 'editprofile')->name('editprofile');
-
 
     Route::get('/edit/{id}', 'edit')->name('Users.edit');
     Route::post('/edit/{id}', 'updateForm')->name('Users.updateForm');
 
     Route::get('/destroy','destroy')->name('Users.destroy');
 
-
-    Route::get('/logout','logout')->name('logout');
 
 
 });
@@ -60,7 +61,7 @@ Route::controller(UsersController::class)->group(function () {
 Route::controller(CategoryController::class)->group(function () {
 
     Route::get('/Category', 'category')->name('Category.category');
-    Route::post('/Category/getcategory', 'getCategory')->name('category.getCategory');
+    Route::post('/Category/getCategory', 'getCategory')->name('category.getCategory');
 
     Route::get('/viewSpecificCategory/{id}', 'viewCategory')->name('Category.viewCategory');
 
@@ -80,8 +81,10 @@ Route::controller(CustomerController::class)->group(function (){
     Route::post('/addcustomer', 'add_customers')->name('add_customers');
 
     Route::get('/customers', 'view_customerslist')->name('view_customerslist');
-    Route::get('/customer/{id}', 'view_specific_customer')->name('view_specific_customer');
+    Route::post('/customers/getCustomers', 'getCustomers')->name('getCustomers');
 
+
+    Route::get('/customer/{id}', 'view_specific_customer')->name('view_specific_customer');
 });
 
 

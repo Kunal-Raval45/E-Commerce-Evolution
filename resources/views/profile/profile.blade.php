@@ -33,26 +33,24 @@
 
                             <div>
                                 <div class="dropdown-item">
-                                    <button class="btn btn-light" id="change_password"> <i id="profile"
+                                    <button class="btn btn-light" id="changePassword"> <i id="password"
                                             class="mdi mdi-account-edit me-2 text-primary"></i>CHANGE PASSWORD</button>
+
+
                                 </div>
                             </div>
 
                         </div>
-                        {{-- <ul class="list-unstyled">
-                            <li><i class="fa fa-envelope"></i> john.doe@example.com</li>
-                            <li><i class="fa fa-phone"></i> 123-456-7890</li>
-                            <li><i class="fa fa-map-marker"></i> New York, USA</li>
-                        </ul> --}}
                     </div>
                 </div>
             </div>
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        {{-- @yield('edit-content') --}}
                         <div id="editprofileform" style="display: none;">
                             <h1>Edit Profile</h1>
+                            {{-- @yield('edit-content') --}}
+
                             <!-- Add your edit profile form elements here -->
                         </div>
                         <div id="changepasswordform" style="display: none;">
@@ -74,13 +72,13 @@
     <script>
         $(document).ready(function() {
 
-            $("#change_password").click(function() {
+            $("#changePassword").click(function() {
                 $("#changepasswordform").show();
                 $("#editprofileform").hide();
             });
             $("#edit_profile").click(function() {
-                $("#editprofileform").show();
                 $("#changepasswordform").hide();
+                $("#editprofileform").show();
             });
         });
     </script>

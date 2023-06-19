@@ -4,34 +4,6 @@
 
 @section('page-css')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" />
-    <style>
-        /* romove order arrow icon */
-        table.dataTable thead>tr>th.sorting:before,
-        table.dataTable thead>tr>th.sorting_asc:before,
-        table.dataTable thead>tr>th.sorting_desc:before,
-        table.dataTable thead>tr>th.sorting_asc_disabled:before,
-        table.dataTable thead>tr>th.sorting_desc_disabled:before,
-        table.dataTable thead>tr>td.sorting:before,
-        table.dataTable thead>tr>td.sorting_asc:before,
-        table.dataTable thead>tr>td.sorting_desc:before,
-        table.dataTable thead>tr>td.sorting_asc_disabled:before,
-        table.dataTable thead>tr>td.sorting_desc_disabled:before {
-            content: none;
-        }
-
-        table.dataTable thead>tr>th.sorting:after,
-        table.dataTable thead>tr>th.sorting_asc:after,
-        table.dataTable thead>tr>th.sorting_desc:after,
-        table.dataTable thead>tr>th.sorting_asc_disabled:after,
-        table.dataTable thead>tr>th.sorting_desc_disabled:after,
-        table.dataTable thead>tr>td.sorting:after,
-        table.dataTable thead>tr>td.sorting_asc:after,
-        table.dataTable thead>tr>td.sorting_desc:after,
-        table.dataTable thead>tr>td.sorting_asc_disabled:after,
-        table.dataTable thead>tr>td.sorting_desc_disabled:after {
-            content: none;
-        }
-    </style>
 @endsection
 
 @section('page-contant')
@@ -60,7 +32,6 @@
                                 </tr>
                             </thead>
                         </table>
-
                     </div>
                 </div>
             </div>
@@ -122,9 +93,6 @@
             $("#apply_filter_btn").click(function() {
                 dtable.ajax.reload(null, false);
             });
-
-
-
-
         });
-    @endsection
+    </script>
+@endsection

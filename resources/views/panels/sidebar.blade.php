@@ -14,7 +14,9 @@
                             <!--change to offline or busy as needed-->
                         </div>
                         <div class="nav-profile-text d-flex flex-column">
-                            <span class="font-weight-bold mb-2">{{ session('username') }}</span>
+                            <span class="font-weight-bold mb-2">@auth
+                                    {{ auth()->user()->name }}</span>
+                            @endauth
                             <span class="text-secondary text-small">...</span>
                         </div>
                         <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
@@ -29,11 +31,15 @@
 
                 <li class="nav-item">
                     <ul class="nav flex-column sub-menu">
-                        @if (!session('username'))
-                            <li class="nav-item"> <a class="nav-link" href="{{ route('Users.login') }}"> Login </a></li>
-                            <li class="nav-item"> <a class="nav-link" href="{{ route('Users.register') }}"> Register</a>
-                            </li>
-                        @endif
+
+                        {{-- @auth
+                            {{ dd(auth()->user()->name) }}
+                        @endauth --}}
+                        {{-- @auth @if (auth()->user()->name == '') --}}
+                        <li class="nav-item"> <a class="nav-link" href="{{ route('Users.login') }}"> Login </a></li>
+                        <li class="nav-item"> <a class="nav-link" href="{{ route('Users.register') }}"> Register</a>
+                        </li>
+                        {{-- @endif() @endauth --}}
                         <li class="nav-item"><a class="nav-link" href="{{ route('Category.category') }}">Category</a>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="">Products</a></li>
