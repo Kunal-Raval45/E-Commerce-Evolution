@@ -7,15 +7,16 @@
 @endsection
 
 @section('page-contant')
-
-    <div class="container">
+    <style>
+    </style>
+    <div class="container ml-2">
         <h1>Customer's List</h1>
         <a href="{{ route('customer_registration_form') }}" class="btn btn-outline-primary">ADD</a>
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <table id="zero_configuration_table" class="table table-striped" style="width:100%">
+                        <table id="zero_configuration_table" class="table table-striped " style="width:100%">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -26,10 +27,9 @@
                                     <th>Country</th>
                                     <th>State</th>
                                     <th>City</th>
-                                    <th>Address 1</th>
-                                    <th>Address 2</th>
-                                    <th>Zipcode</th>
-                                    <th></th>
+
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                         </table>
@@ -37,17 +37,10 @@
                 </div>
             </div>
         </div>
-    </div>
-
-@endsection
-
-@section('page-js')
+    </div>@endsection @section('page-js')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-    <!-- Datatable JS -->
-    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-
-
+    < !-- Datatable JS -->
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         $.ajaxSetup({
 
@@ -95,5 +88,4 @@
                 dtable.ajax.reload(null, false);
             });
         });
-    </script>
-@endsection
+    </script>@endsection

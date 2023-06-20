@@ -42,7 +42,7 @@
                         {{-- @endif() @endauth --}}
                         <li class="nav-item"><a class="nav-link" href="{{ route('Category.category') }}">Category</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="">Products</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('viewProducts') }}">Products</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('viewusers') }}">Users</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('view_customerslist') }}">Customers</a>
                         </li>

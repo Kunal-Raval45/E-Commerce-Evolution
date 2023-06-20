@@ -6,8 +6,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\ForgotPasswordController;
-
-
+use App\Http\Controllers\ProductsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +35,8 @@ Route::controller(AuthController::class)->group(function (){
     Route::get('/logout','logout')->name('logout');
 
 });
+
+
 Route::controller(UsersController::class)->group(function () {
 
 
@@ -50,6 +51,11 @@ Route::controller(UsersController::class)->group(function () {
 
     Route::get('/edit/{id}', 'edit')->name('Users.edit');
     Route::post('/edit/{id}', 'updateForm')->name('Users.updateForm');
+
+    Route::get('/viewprofile', 'viewProfile')->name('viewProfile');
+
+    Route::post('/viewprofile', 'updateProfile')->name('updateProfile');
+    Route::post('/viewprofile/updatePassword', 'updatePassword')->name('updatePassword');
 
     Route::get('/destroy','destroy')->name('Users.destroy');
 
@@ -87,6 +93,15 @@ Route::controller(CustomerController::class)->group(function (){
     Route::get('/customer/{id}', 'view_specific_customer')->name('view_specific_customer');
 });
 
+
+Route::controller(ProductsController::class)->group(function (){
+
+    Route::get('/products', 'viewProducts')->name('viewProducts');
+
+    Route::get('/addproducts', 'addProducts')->name('addProducts');
+
+
+});
 
 Route::post('api/fetch-states', [DropdownController::class, 'fetchState']);
 Route::post('api/fetch-cities', [DropdownController::class, 'fetchCity']);

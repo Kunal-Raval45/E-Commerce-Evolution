@@ -58,7 +58,7 @@
                             </div>
                             <div id="more_settings" style="display: none">
                                 <div id="view_profile">
-                                    <a class="dropdown-item" href="">
+                                    <a class="dropdown-item" href="{{ route('viewProfile') }}">
                                         <i id="profile" class="mdi mdi-account me-2 text-primary"></i> View Profile
                                     </a>
                                 </div>

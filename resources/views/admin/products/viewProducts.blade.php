@@ -9,7 +9,8 @@
 @section('page-contant')
 
     <div>
-        <h1>Profile Update</h1>
+        <h1>Products</h1>
+        <a class="btn btn-primary" href="{{ route('addProducts') }}">Add Products</a>
     </div>
 
 @endsection

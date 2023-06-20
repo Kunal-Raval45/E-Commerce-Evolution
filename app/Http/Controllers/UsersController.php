@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
@@ -149,9 +150,6 @@ class UsersController extends Controller
         return view('admin.users.usersedit', compact('users'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function updateForm(Request $request, string $id)
     {
         $updateData = $request->validate([
@@ -178,13 +176,77 @@ class UsersController extends Controller
         return redirect('users')->with('completed', 'user has been updated');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $users = User::findOrFail($id);
         $users->delete();
         return redirect('/users')->with('completed', 'User has been deleted');
+    }
+
+    public function viewProfile(){
+        $user = User::all()->where('id',auth()->user()->id);
+
+       return view('admin.users.viewprofile', compact('user'));
+    }
+
+    public function updatePassword(Request $request){
+        $validator = Validator::make($request->all(), [
+            'currentPassword' => 'required|min:8|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
+            'newPassword' => 'required|min:8|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
+            'confirmPassword' => 'same:newPassword',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->all()
+            ]);
+        }
+
+        $user = User::find(auth()->user()->id);
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+        return response()->json(['success' => 'Password changed successfully.']);
+    }
+
+    public function updateProfile(Request $request){
+
+        $profile_image = $request->profile_image;
+        $user = User::find(auth()->user()->id);
+
+
+        if($profile_image){
+            $validator = Validator::make($request->all(),[
+                'profile_image' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => $validator->errors()->all()
+                ]);
+            }
+
+            $imageName = date('d-m-y').'.'.$user->name.'.'.($request->profile_image->getClientOriginalName());
+            $priorPath = ("images/users/uploads");
+        }
+
+
+
+        $path = $request->profile_image->move($priorPath,$imageName);
+
+
+        if($profile_image != $path){
+            File::delete([$user->profile_image]);
+        }
+        if($user->profile_image != $path){
+            $profile_image = $path;
+            $user = $profile_image;
+
+        }
+
+        $user->profile_image = $path;
+        $user->save();
+
+        return response()->json(['success' => 'Profile changed successfully.']);
+
     }
 }

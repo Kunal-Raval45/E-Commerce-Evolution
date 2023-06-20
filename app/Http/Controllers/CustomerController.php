@@ -119,13 +119,6 @@ class CustomerController extends Controller
 
             $row[] = $record['city'];
 
-            $row[] = $record['address_1'];
-
-            $row[] = $record['address_2'];
-
-            $row[] = $record['zipcode'];
-
-
             $row[] = $status;
 
             $Action = '';
@@ -133,13 +126,9 @@ class CustomerController extends Controller
 
             $Action .= '<a href="javascript" class="btn btn-secondary">edit</a>&nbsp;|';
 
-
             $Action .= '<a href="javascript:;" class="btn">view</a>&nbsp;|';
 
-
             $Action .= '<a data-id="" href="javascript:;" class="btn">delete</a>';
-
-
 
             $row[] = $Action;
             $data[] = $row;
