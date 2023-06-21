@@ -18,7 +18,7 @@ class products extends Model
         'product_price',
         'product_description',
         'product_stock_quantity',
-       'product_status',
+        'product_status',
         'category_id',
     ];
 }

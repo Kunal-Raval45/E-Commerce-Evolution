@@ -97,8 +97,12 @@ Route::controller(CustomerController::class)->group(function (){
 Route::controller(ProductsController::class)->group(function (){
 
     Route::get('/products', 'viewProducts')->name('viewProducts');
+    Route::post('/products/getProducts', 'getProducts')->name('getProducts');
 
     Route::get('/addproducts', 'addProducts')->name('addProducts');
+    Route::post('/addproducts', 'addProductsForm')->name('addProductsForm');
+
+    Route::get('/product/{id}', 'viewSpecificProduct')->name('viewSpecificProduct');
 
 
 });
